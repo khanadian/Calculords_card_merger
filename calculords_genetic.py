@@ -7,21 +7,27 @@ Created on Fri Oct 18 09:15:20 2019
 import numpy as np
 import pandas as pd
 from collections import Counter
-#best i can come up with is (7*9)-1 and 5(2+3)
+from datetime import datetime
+
+#Very imconsistent with pla = [205] and math = [1,2,3,4,5,6], even though theres more than 1 way to make the number
+#TODO does not work if pla has 0 in it
 
 # hyperparameters
 ops = ["+", "-", "*"]
-npop = 10 # population size
-math_orig = np.array([1,2,3,5,7,9])
-gens = 100
+npop = 50 # population size
+pla = [1, 3] #cards that can be played
+math_orig = np.copy([1, 3]) #cards that can be manipulated to make play cards
+gens = 50
 math = []
 instructions = []#first_iteration
 real_instructions = []#only record instructions used at the end
 relevant_instructions = [] #records instructions that lead to solutions
 all_info = []
-
-
+first_play = False
+#TODO does not work if first_play = False, pla = [5,4,40] and math = [5,4,2]. should play 5 and 4, but plays 40
+#TODO list does not work properly on pla = math = [1,3]
 def main():
+    startTime = datetime.now()
     counter = 0
     alpha = [0]
     global all_info
@@ -85,7 +91,8 @@ def main():
         counter = counter + 1
     
     print(alpha)
-
+    print(datetime.now() - startTime)
+    
 def run_gen(next_gen):
     global all_info
     global relevant_instructions
@@ -124,7 +131,7 @@ def run_gen(next_gen):
 def play_cards(child, parent_ins):
     global math
     global math_orig
-    play = np.array([25, 35, 62, 42, 100, 56]) #cards that can be played
+    play = np.copy(pla) #cards that can be played
     math = np.copy(math_orig) #cards that can be manipulated to make play cards
     loop = True
     #first_iteration = True
@@ -255,7 +262,7 @@ def print_formula(pc):
     
 def print_score(points, cards_played, isempty):
     v = 0
-    if isempty:
+    if isempty and first_play:
         v = v+1000
         
     return(v+(200*cards_played)+points)
