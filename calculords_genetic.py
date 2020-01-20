@@ -15,8 +15,8 @@ from datetime import datetime
 # hyperparameters
 ops = ["+", "-", "*"]
 npop = 50 # population size
-pla = [1, 3] #cards that can be played
-math_orig = np.copy([1, 3]) #cards that can be manipulated to make play cards
+pla = [62,12] #cards that can be played
+math_orig = np.copy([2,1,6,9,4,5]) #cards that can be manipulated to make play cards
 gens = 50
 math = []
 instructions = []#first_iteration
@@ -26,6 +26,8 @@ all_info = []
 first_play = False
 #TODO does not work if first_play = False, pla = [5,4,40] and math = [5,4,2]. should play 5 and 4, but plays 40
 #TODO list does not work properly on pla = math = [1,3]
+
+
 def main():
     startTime = datetime.now()
     counter = 0
@@ -139,8 +141,8 @@ def play_cards(child, parent_ins):
     cards_played = 0
     ri_index = 0
     global real_instructions
-    real_instructions = ["" for x in range(5)]
-    played_cards = [0 for x in range(6)]
+    real_instructions = ["" for x in range(6)]
+    played_cards = [0 for x in range(7)]
     pc_ind = 0
     global instructions 
     if parent_ins:
@@ -175,8 +177,15 @@ def play_cards(child, parent_ins):
             st = instructions[counter].split()
             num1 = int(st[0])
             num2 = int(st[2])
-            if(np.isin(num1, math) and np.isin(num2, math)): #make the predetermined decision
+            if((np.isin(num1, math) and np.isin(num2, math) and num1 != num2) or (num1 == num2 and np.count_nonzero(math == num1)>1)): #make the predetermined decision
                 ins = instructions[counter]
+                #record decision
+                real_instructions[ri_index] = ins
+                ri_index = ri_index + 1
+                #add product and subtract base numbers
+                math = np.append(math, eval(ins))
+                math = np.delete(math, np.where(math == num1)[0][0])
+                math = np.delete(math, np.where(math == num2)[0][0])
             else: #make a different decision
                 dec = make_decision(1, math)
                 ins = dec[0]
@@ -184,14 +193,7 @@ def play_cards(child, parent_ins):
                 num1 = int(st[0])
                 num2 = int(st[2])
                 
-            #record decision
-            real_instructions[ri_index] = ins
-            ri_index = ri_index + 1
             
-            #add product and subtract base numbers
-            math = np.append(math, eval(ins))
-            math = np.delete(math, np.where(math == num1)[0][0])
-            math = np.delete(math, np.where(math == num2)[0][0])
             
             
         
