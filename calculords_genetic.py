@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
 """
 Created on Fri Oct 18 09:15:20 2019
-
 @author: Iqbal Khan
 """
 import numpy as np
-import pandas as pd
 from collections import Counter
 from datetime import datetime
 
@@ -15,16 +13,16 @@ from datetime import datetime
 # hyperparameters
 ops = ["+", "-", "*"]
 npop = 50 # population size
-pla = [62,12] #cards that can be played
-math_orig = np.copy([2,1,6,9,4,5]) #cards that can be manipulated to make play cards
+pla = [25,35,42,62,56,100] #cards that can be played
+math_orig = list([1,2,3,5,7,9]) #cards that can be manipulated to make play cards
 gens = 50
 math = []
 instructions = []#first_iteration
 real_instructions = []#only record instructions used at the end
 relevant_instructions = [] #records instructions that lead to solutions
 all_info = []
-first_play = False
-#TODO does not work if first_play = False, pla = [5,4,40] and math = [5,4,2]. should play 5 and 4, but plays 40
+first_play = True
+#TODO does not work if first_play = True, pla = [5,4,40] and math = [5,4,2]. should play 5 and 4, but plays 40
 #TODO list does not work properly on pla = math = [1,3]
 
 
@@ -55,7 +53,7 @@ def main():
         #populate next 60% through mixing
         instructions = []
         for i in range(0, int(round(6*npop/10))):
-            nums = np.copy(math_orig)
+            nums = list(math_orig)
             not_done = True
             new_instructions = []
             ind = 0
@@ -66,12 +64,12 @@ def main():
                     if np.random.randint(2) > 0 and not_done and not skip:
                         #ensure that formula is valid
                         sp = formula.split()
-                        if np.isin(int(sp[0]), nums) and np.isin(int(sp[2]), nums):
-                            if int(sp[0]) != int(sp[2]) or (int(sp[0]) == int(sp[2]) and len(np.where(nums == int(sp[0]))[0]) > 1):
-                                new_instructions = np.append(new_instructions, formula)
-                                nums = np.delete(nums, np.where(nums == int(sp[0]))[0][0])
-                                nums = np.delete(nums, np.where(nums == int(sp[2]))[0][0])
-                                nums = np.append(nums, eval(formula))
+                        if int(sp[0]) in nums and int(sp[2]) in nums:
+                            if int(sp[0]) != int(sp[2]) or (int(sp[0]) == int(sp[2]) and nums.count(int(sp[0])) > 1):
+                                new_instructions.append(formula)
+                                nums.remove(int(sp[0]))
+                                nums.remove(int(sp[2]))
+                                nums.append(eval(formula))
                                 ind = 0
                                 skip = True
                         if len(new_instructions) == 6:
@@ -106,7 +104,7 @@ def run_gen(next_gen):
     
     all_info.sort(key=lambda tup:tup[0], reverse = True)
     if(len(all_info)>0):
-        alpha = np.copy(all_info[0])
+        alpha = list(all_info[0])
     else:
         alpha = [-1]
     #dictionary of formulas
@@ -133,8 +131,8 @@ def run_gen(next_gen):
 def play_cards(child, parent_ins):
     global math
     global math_orig
-    play = np.copy(pla) #cards that can be played
-    math = np.copy(math_orig) #cards that can be manipulated to make play cards
+    play = list(pla) #cards that can be played
+    math = list(math_orig) #cards that can be manipulated to make play cards
     loop = True
     #first_iteration = True
     points = 0 #the value of the card
@@ -152,14 +150,14 @@ def play_cards(child, parent_ins):
     if(check_usable(play, math)):
         #50/50 on whether to play a card or not
         #also check if it is last card
-        if(play.size == 1 or np.random.randint(2)>0):
-            match = np.isin(play, math)
+        if(len(play) == 1 or np.random.randint(2)>0):
+            match = np.isin(np.copy(play), np.copy(math))
             for i in range(0, match.size):
                 if i < match.size and match[i]:#if we can play this card
                     num = play[i]
-                    math = np.delete(math, np.where(math == num)[0][0])
-                    play = np.delete(play, i)
-                    match = np.delete(match, i)
+                    math.remove(num)
+                    play.remove(i)
+                    match.remove(i)
                     i = i-1
                     points = points + num
                     cards_played = cards_played + 1
@@ -168,7 +166,7 @@ def play_cards(child, parent_ins):
     counter = -1                 
     while(loop): #ends when 0 or 1 cards remain in math, or 0 cards in play
         counter = counter + 1
-        if(math.size < 2):
+        if(len(math) < 2):
             loop = False
         else:
             if counter >= len(instructions) or instructions[counter] == "":
@@ -177,36 +175,26 @@ def play_cards(child, parent_ins):
             st = instructions[counter].split()
             num1 = int(st[0])
             num2 = int(st[2])
-            if((np.isin(num1, math) and np.isin(num2, math) and num1 != num2) or (num1 == num2 and np.count_nonzero(math == num1)>1)): #make the predetermined decision
+            if(((num1 in math) and num2 in math and num1 != num2) or (num1 == num2 and math.count(num1)>1)): #make the predetermined decision
                 ins = instructions[counter]
                 #record decision
                 real_instructions[ri_index] = ins
                 ri_index = ri_index + 1
                 #add product and subtract base numbers
-                math = np.append(math, eval(ins))
-                math = np.delete(math, np.where(math == num1)[0][0])
-                math = np.delete(math, np.where(math == num2)[0][0])
-            else: #make a different decision
-                dec = make_decision(1, math)
-                ins = dec[0]
-                st = ins.split()
-                num1 = int(st[0])
-                num2 = int(st[2])
-                
+                math.append(eval(ins))
+                math.remove(num1)
+                math.remove(num2)
             
-            
-            
-        
         if(check_usable(play, math)):
             #50/50 on whether to play a card or not
             #also check if it is last card
-            if(play.size == 1 or np.random.randint(2)>0):
-                match = np.isin(play, math)
+            if(len(play) == 1 or np.random.randint(2)>0):
+                match = np.isin(np.copy(play), np.copy(math))
                 for i in range(0, match.size):
                     if i < match.size and match[i]:#if we can play this card
                         num = play[i]
-                        math = np.delete(math, np.where(math == num)[0][0])
-                        play = np.delete(play, i)
+                        math.remove(num)
+                        play.pop(i)
                         match = np.delete(match, i)
                         i = i-1
                         points = points + num
@@ -214,13 +202,13 @@ def play_cards(child, parent_ins):
                         played_cards[pc_ind] = num
                         pc_ind = pc_ind + 1
                         
-        if (play.size == 0):
+        if (len(play) == 0):
             loop = False
-    score = print_score(points, cards_played, math.size == 0)
-    math = np.copy(math_orig)
+    score = print_score(points, cards_played, len(math) == 0)
+    math = list(math_orig)
     real_instructions.reverse()
     info = [score, played_cards, print_formula(played_cards), relevant_instructions]
-    math_orig = np.copy(math)
+    math_orig = list(math)
     if (info[0] != 0):
         all_info.append(info)
     
@@ -236,8 +224,7 @@ def print_formula(pc):
     while(ind < len(pc) and pc[ind] != 0):
         for instruction in real_instructions:
             if (instruction!= "" and not done and eval(instruction) == int(pc[ind])):
-                real_instructions = np.asarray(real_instructions)
-                real_instructions = np.delete(real_instructions, np.where(real_instructions == instruction)[0][0])
+                real_instructions.remove(instruction)
                 sp = instruction.split()
                 #break down the components further
                 n1 = print_formula([str(sp[0])])
@@ -245,14 +232,14 @@ def print_formula(pc):
                 relevant_instructions.append(instruction)
                 if (len(n1) == 0 and len(n2) == 0):
                     note.append(instruction)
-                    math_orig = np.delete(math_orig, np.where(math_orig == int(sp[0]))[0][0])
-                    math_orig = np.delete(math_orig, np.where(math_orig == int(sp[2]))[0][0])
+                    math_orig.remove(int(sp[0]))
+                    math_orig.remove(int(sp[2]))
                 elif len(n1) == 0:
                     note.append(sp[0]+" "+sp[1]+" "+"("+n2[0]+")")
-                    math_orig = np.delete(math_orig, np.where(math_orig == int(sp[0]))[0][0])
+                    math_orig.remove(int(sp[0]))
                 elif len(n2) == 0:
                     note.append("("+n1[0]+")"+" "+sp[1]+" "+sp[2])
-                    math_orig = np.delete(math_orig, np.where(math_orig == int(sp[2]))[0][0])
+                    math_orig.remove(int(sp[2]))
                 else:
                     note.append("("+n1[0]+")"+" "+sp[1]+" "+"("+n2[0]+")")
                       
@@ -271,7 +258,7 @@ def print_score(points, cards_played, isempty):
 
 
 def check_usable(play, math):
-    return pd.Series(math).isin(play).any()
+    return [i for i in math if i in play]
     
 #generates an array of decisions
 def make_decision(num_decisions, math):
@@ -279,10 +266,10 @@ def make_decision(num_decisions, math):
     r = ["","","","",""] #find a better way to do this (not [[""]*3]*5)
     for i in range(0,num_decisions):
         op_ind = np.random.randint(3)
-        math_ind1 = np.random.randint(math.size)
-        math_ind2 = np.random.randint(math.size-1)
+        math_ind1 = np.random.randint(len(math))
+        math_ind2 = np.random.randint(len(math)-1)
         if math_ind1 == math_ind2:
-            math_ind2 = math.size-1
+            math_ind2 = len(math)-1
             
         num1 = str(math[math_ind1])
         num2 = str(math[math_ind2])
@@ -298,5 +285,4 @@ each child will have 5 random instructions
 an instruction will be [index, operation, index]
 there will be 10-100 children
 error check for non-existing variables
-
 """

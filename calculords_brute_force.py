@@ -3,8 +3,6 @@
 Created on Fri Oct 18 09:15:20 2019
 @author: Iqbal Khan
 """
-import numpy as np
-import pandas as pd
 from datetime import datetime
 
 #pla = [25, 35, 62, 42, 100, 56] #cards that can be played
@@ -13,9 +11,9 @@ from datetime import datetime
 
 # hyperparameters
 ops = ["+", "-", "*"]
-pla = [50,18,32,25] #cards that can be played
-math_orig = [5,6,3,8,2,1] #cards that can be manipulated to make play cards
-m = np.copy(math_orig)
+pla = [25,35,42,62,56,100] #cards that can be played
+math_orig = [1,2,3,5,7,9] #cards that can be manipulated to make play cards
+m = list(math_orig)
 real_instructions = []#only record instructions used at the end
 t1 = 0 #variable used for real time measurement
 
@@ -47,15 +45,15 @@ def recurse(st, math, x, i1, i2):
     global real_instructions
     global m
     
-    ma = np.copy(math)
+    ma = list(math)
     if x:
-        e = [eval(x)]
-        ma = np.append(math, e)
-        ma = np.delete(ma, i1)
+        e = eval(x)
+        ma.append(e)
+        ma.pop(i1)
         if (i1 < i2):
-            ma = np.delete(ma, i2-1)
+            ma.pop(i2-1)
         else:
-            ma = np.delete(ma, i2)
+            ma.pop(i2)
     
     for index in range(0, len(ma)):
         
@@ -83,7 +81,7 @@ def recurse(st, math, x, i1, i2):
                             if sc > best_score:
                                 best_score = sc
                                 best_pc = pc
-                                m = np.copy(math_orig)
+                                m = list(math_orig)
                                 best_ri = print_formula(pc)
                     else:
                         x = str(ma[index])+str(op)+str(ma[ind])
@@ -113,22 +111,21 @@ def print_formula(pc):
     while(ind < len(pc) and pc[ind] != 0):
         for instruction in real_instructions:
             if (instruction!= "" and not done and eval(instruction) == int(pc[ind])):
-                real_instructions = np.asarray(real_instructions)
-                real_instructions = np.delete(real_instructions, np.where(real_instructions == instruction)[0][0])
+                real_instructions.remove(instruction)
                 sp = instruction.split()
                 #break down the ocmponents further
                 n1 = print_formula([str(sp[0])])
                 n2 = print_formula([str(sp[2])])
                 if (len(n1) == 0 and len(n2) == 0):
                     note.append(instruction)
-                    m = np.delete(m, np.where(m == int(sp[0]))[0][0])
-                    m = np.delete(m, np.where(m == int(sp[2]))[0][0])
+                    m.remove(int(sp[0]))
+                    m.remove(int(sp[2]))
                 elif len(n1) == 0:
                     note.append(sp[0]+" "+sp[1]+" "+"("+n2[0]+")")
-                    m = np.delete(m, np.where(m == int(sp[0]))[0][0])
+                    m.remove(int(sp[0]))
                 elif len(n2) == 0:
                     note.append("("+n1[0]+")"+" "+sp[1]+" "+sp[2])
-                    m = np.delete(m, np.where(m == int(sp[2]))[0][0])
+                    m.remove(int(sp[2]))
                 else:
                     note.append("("+n1[0]+")"+" "+sp[1]+" "+"("+n2[0]+")")
                       
@@ -191,10 +188,6 @@ def print_score(points, cards_played, isempty):
         v = v+1000
         
     return(v+(200*cards_played)+points)
-
-#checks if any math cards are playable
-def check_usable(play, math):
-    return pd.Series(math).isin(play).any()
 
 if __name__== "__main__":
   main()
