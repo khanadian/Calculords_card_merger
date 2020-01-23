@@ -12,10 +12,10 @@ from datetime import datetime
 
 # hyperparameters
 ops = ["+", "-", "*"]
-npop = 50 # population size
+npop = 200 # population size
 pla = [25,35,42,62,56,100] #cards that can be played
-math_orig = list([1,2,3,5,7,9]) #cards that can be manipulated to make play cards
-gens = 50
+math_orig = [1,2,3,5,7,9,4,6,8] #cards that can be manipulated to make play cards
+gens = 100
 math = []
 instructions = []#first_iteration
 real_instructions = []#only record instructions used at the end
@@ -139,7 +139,7 @@ def play_cards(child, parent_ins):
     cards_played = 0
     ri_index = 0
     global real_instructions
-    real_instructions = ["" for x in range(6)]
+    real_instructions = []
     played_cards = [0 for x in range(7)]
     pc_ind = 0
     global instructions 
@@ -157,7 +157,7 @@ def play_cards(child, parent_ins):
                     num = play[i]
                     math.remove(num)
                     play.remove(i)
-                    match.remove(i)
+                    match = np.delete(match, i)
                     i = i-1
                     points = points + num
                     cards_played = cards_played + 1
@@ -178,7 +178,7 @@ def play_cards(child, parent_ins):
             if(((num1 in math) and num2 in math and num1 != num2) or (num1 == num2 and math.count(num1)>1)): #make the predetermined decision
                 ins = instructions[counter]
                 #record decision
-                real_instructions[ri_index] = ins
+                real_instructions.append(ins)
                 ri_index = ri_index + 1
                 #add product and subtract base numbers
                 math.append(eval(ins))
@@ -263,7 +263,7 @@ def check_usable(play, math):
 #generates an array of decisions
 def make_decision(num_decisions, math):
     #[string, num1, num2]
-    r = ["","","","",""] #find a better way to do this (not [[""]*3]*5)
+    r = [] #find a better way to do this (not [[""]*3]*5)
     for i in range(0,num_decisions):
         op_ind = np.random.randint(3)
         math_ind1 = np.random.randint(len(math))
@@ -273,16 +273,9 @@ def make_decision(num_decisions, math):
             
         num1 = str(math[math_ind1])
         num2 = str(math[math_ind2])
-        r[i] = num1 +" "+ ops[op_ind]+" "+num2
+        r.append(num1 +" "+ ops[op_ind]+" "+num2)
             
     return r
 
 if __name__== "__main__":
   main()
-
-"""
-each child will have 5 random instructions
-an instruction will be [index, operation, index]
-there will be 10-100 children
-error check for non-existing variables
-"""
