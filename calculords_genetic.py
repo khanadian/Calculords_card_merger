@@ -12,19 +12,18 @@ from datetime import datetime
 
 # hyperparameters
 ops = ["+", "-", "*"]
-npop = 200 # population size
-pla = [25,35,42,62,56,100] #cards that can be played
-math_orig = [1,2,3,5,7,9,4,6,8] #cards that can be manipulated to make play cards
-gens = 100
+npop = 30 # population size
+pla = [125,2,12,20,29,50] #cards that can be played
+math_orig = [4,8,3,9,5,2,5,7,6] #cards that can be manipulated to make play cards
+gens = 600
 math = []
 instructions = []#first_iteration
 real_instructions = []#only record instructions used at the end
 relevant_instructions = [] #records instructions that lead to solutions
 all_info = []
-first_play = True
+first_play = False
 #TODO does not work if first_play = True, pla = [5,4,40] and math = [5,4,2]. should play 5 and 4, but plays 40
 #TODO list does not work properly on pla = math = [1,3]
-
 
 def main():
     startTime = datetime.now()
@@ -37,6 +36,7 @@ def main():
         a = run_gen(next_gen)
         if (alpha[0] < a[0]):
             alpha = a
+            print(alpha)
             
         #populate first 10% through strongest
         next_gen = []
@@ -156,13 +156,14 @@ def play_cards(child, parent_ins):
                 if i < match.size and match[i]:#if we can play this card
                     num = play[i]
                     math.remove(num)
-                    play.remove(i)
+                    play.pop(i)
                     match = np.delete(match, i)
                     i = i-1
-                    points = points + num
+                    points = points + abs(num)
                     cards_played = cards_played + 1
                     played_cards[pc_ind] = num
                     pc_ind = pc_ind + 1
+                    
     counter = -1                 
     while(loop): #ends when 0 or 1 cards remain in math, or 0 cards in play
         counter = counter + 1
@@ -197,7 +198,7 @@ def play_cards(child, parent_ins):
                         play.pop(i)
                         match = np.delete(match, i)
                         i = i-1
-                        points = points + num
+                        points = points + abs(num)
                         cards_played = cards_played + 1
                         played_cards[pc_ind] = num
                         pc_ind = pc_ind + 1
@@ -207,7 +208,24 @@ def play_cards(child, parent_ins):
     score = print_score(points, cards_played, len(math) == 0)
     math = list(math_orig)
     real_instructions.reverse()
-    info = [score, played_cards, print_formula(played_cards), relevant_instructions]
+    
+    # in case of numbers added without formulas
+    while 0 in played_cards: #WARNING: this assumes 0 is not a playable card. maybe find a different placeholder?
+        played_cards.remove(0)
+    
+    pf = print_formula(played_cards)
+    if len(played_cards) > len(pf):
+        for card in played_cards:
+            found = False
+            for formula in pf:
+                if card == eval(formula):
+                    found = True
+            if not found:
+                pf.append(str(card))
+                
+                
+    
+    info = [score, played_cards, pf, relevant_instructions]
     math_orig = list(math)
     if (info[0] != 0):
         all_info.append(info)
@@ -247,6 +265,8 @@ def print_formula(pc):
         
         done = False
         ind = ind + 1
+        
+
     return(note)
     
 def print_score(points, cards_played, isempty):
