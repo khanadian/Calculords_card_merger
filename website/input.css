@@ -1,0 +1,47 @@
+.setBox
+{
+    
+    width: 200px;
+    height: 150px;
+    border:1px solid white;
+    margin-top: 4px;
+}
+
+#playSet
+{
+    margin-left: 4px;
+    float: left;
+}
+
+#mathSet
+{
+    margin-right: 4px;
+    float: right;
+}
+
+#mathTitle
+{
+    margin: 0px;
+}
+
+.playInput
+{
+    width: 30px;
+}
+
+.mathInput
+{
+    width: 20px;
+}
+
+.inputRow
+{
+    display: flex;
+    justify-content: space-between;
+}
+
+.fakeInput
+{
+    width:0px;
+    visibility: hidden;
+}

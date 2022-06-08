@@ -1,1 +1,7 @@
 make a website that uses the calculords python script.
+
+https://wireframe.cc/iE3U3R
+
+notes:
+- the textboxes dont need to be that wide
+	- in fact, the entire tool could be a lot slimmer. Depends on output section
