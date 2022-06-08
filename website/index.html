@@ -19,75 +19,97 @@
         <div class = "title">
             <h1>Calculords Tool</h1>
         </div>
-
-        <div id = "tool"> 
-            <div id = "inputs">
-                <div id = "playSet" class="setBox">
-                    <h2 class="title">
-                        Play Set
-                    </h2>
-                    <div class="inputRow">
-                        <input class= "fakeInput" maxlength="3">
-                        <input id= "play1" class= "playInput" maxlength="3">
-                        <input id= "play2" class= "playInput" maxlength="3">
-                        <input id= "play3" class= "playInput" maxlength="3">
-                        <input class= "fakeInput" maxlength="3">
+        <div id="everything">
+            <div id = "tool"> 
+                <div id = "inputs">
+                    <div id = "playSet" class="setBox">
+                        <h2 class="title">
+                            Play Set
+                        </h2>
+                        <div class="inputRow">
+                            <input id= "play1" class= "playInput" maxlength="3">
+                            <input id= "play2" class= "playInput" maxlength="3">
+                            <input id= "play3" class= "playInput" maxlength="3">
+                        </div>
+                        <div class="inputRow">
+                            <input class= "fakeInput" maxlength="3">
+                        </div>
+                        <div class="inputRow">
+                            <input id= "play4" class= "playInput" maxlength="3">
+                            <input id= "play5" class= "playInput" maxlength="3">
+                            <input id= "play6" class= "playInput" maxlength="3">
+                        </div>
                     </div>
-                    <div class="inputRow">
-                        <input class= "fakeInput" maxlength="3">
-                        <input class= "fakeInput" maxlength="3">
-                    </div>
-                    <div class="inputRow">
-                        <input class= "fakeInput" maxlength="3">
-                        <input id= "play4" class= "playInput" maxlength="3">
-                        <input id= "play5" class= "playInput" maxlength="3">
-                        <input id= "play6" class= "playInput" maxlength="3">
-                        <input class= "fakeInput" maxlength="3">
+                    <div id = "mathSet" class="setBox">
+                        <h2 class="title" id="mathTitle" >
+                            Math Set
+                        </h2>
+                        <div class="inputRow">
+                            <input id= "math1" class= "mathInput" maxlength="2">
+                            <input id= "math2" class= "mathInput" maxlength="2">
+                            <input id= "math3" class= "mathInput" maxlength="2">
+                        </div>
+                        <div class="inputRow">
+                            <input class= "fakeInput" maxlength="3">
+                        </div>
+                        <div class="inputRow"> 
+                            <input id= "math4" class= "mathInput" maxlength="2">
+                            <input id= "math5" class= "mathInput" maxlength="2">
+                            <input id= "math6" class= "mathInput" maxlength="2">
+                        </div>
+                        <div class="inputRow">
+                            <input class= "fakeInput" maxlength="3">
+                        </div>
+                        <div class="inputRow">
+                            <input id= "math7" class= "mathInput" maxlength="2">
+                            <input id= "math8" class= "mathInput" maxlength="2">
+                            <input id= "math9" class= "mathInput" maxlength="2">
+                        </div>
                     </div>
                 </div>
-                <div id = "mathSet" class="setBox">
-                    <h2 class="title" id="mathTitle" >
-                        Math Set
-                    </h2>
-
-                    <div class="inputRow">
-                        <input class= "fakeInput" maxlength="3">
-                        <input id= "math1" class= "mathInput" maxlength="2">
-                        <input id= "math2" class= "mathInput" maxlength="2">
-                        <input id= "math3" class= "mathInput" maxlength="2">
-                        <input class= "fakeInput" maxlength="3">
+                <button type="submit">submit</button>
+                <div id="output">
+                    <div id="stepBox">
+                        <h2 class="title">
+                            steps
+                        </h2>
+                        <div class="outputText">
+                            1. 111 + 222 <br>
+                            2. 1 + 2 <br>
+                            3. 1 + 2 <br>
+                            4. 1 + 2 <br>
+                            5. 1 + 2 <br>
+                            6. 1 + 2 <br>
+                            7. 1 + 2 <br>
+                            8. 1 + 2
+                        </div>
                     </div>
-                    <div class="inputRow">
-                        <input class= "fakeInput" maxlength="3">
-                        <input class= "fakeInput" maxlength="3">
-                    </div>
-                    <div class="inputRow"> 
-                        <input class= "fakeInput" maxlength="3">
-                        <input id= "math4" class= "mathInput" maxlength="2">
-                        <input id= "math5" class= "mathInput" maxlength="2">
-                        <input id= "math6" class= "mathInput" maxlength="2">
-                        <input class= "fakeInput" maxlength="3">
-                    </div>
-                    <div class="inputRow">
-                        <input class= "fakeInput" maxlength="3">
-                        <input class= "fakeInput" maxlength="3">
-                    </div>
-                    <div class="inputRow">
-                        <input class= "fakeInput" maxlength="3">
-                        <input id= "math7" class= "mathInput" maxlength="2">
-                        <input id= "math8" class= "mathInput" maxlength="2">
-                        <input id= "math9" class= "mathInput" maxlength="2">
-                        <input class= "fakeInput" maxlength="3">
+                    <div id="formulaBox">
+                        <h2 class="title">
+                            formula
+                        </h2>
+                        <div class="outputText">
+                            1. (((((((11+22)+33)+44)+55)+66)+77)+88)+99<br>
+                            1. (((((((11+22)+33)+44)+55)+66)+77)+88)+99<br>
+                            1. (((((((11+22)+33)+44)+55)+66)+77)+88)+99<br>
+                            1. (((((((11+22)+33)+44)+55)+66)+77)+88)+99<br>
+                            1. (((((((11+22)+33)+44)+55)+66)+77)+88)+99<br>
+                            1. (((((((11+22)+33)+44)+55)+66)+77)+88)+99
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div id = "instructions">
-            <h2 class="title">
-                Instructions
-            </h2>
-
+            <div id = "instructions">
+                <h2 class="title">
+                    Instructions
+                </h2>
+                <div class="outputText">
+                    1. Input the number needed for the playable cards in the "Play Set" text fields<br>
+                    2. Input the numbers you are given that can be operated on in the "Math Set" text fields<br>
+                    3. click submit once all the numbers are put in<br>
+                    4. use the steps generated in the output to play optimally
+                </div>
+            </div>
         </div>
         <script src="" async defer></script>
     </body>

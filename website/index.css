@@ -12,14 +12,23 @@ body
     text-align: center;
 }
 
+#everything
+{
+    position: relative;
+    margin:auto;
+    height:425px;
+    width: 634px;
+}
+
 
 #tool
 {
     position: relative;
     float: left;
     border:1px solid white;
+    border-right: 0px;
     width: 430px;
-    height: 600px;
+    height: 420px;
 }
 
 h1, h2
@@ -32,6 +41,41 @@ h1, h2
     position: relative;
     float: left;
     border: 1px solid white;
-    width: 600px;
-    height: 600px;
+    width: 200px;
+    height: 420px;
+}
+
+button
+{
+    position: relative;
+    margin-top: 4px;
+    left: 43%;
+}
+
+#output
+{
+    border-top: 1px solid white;
+    margin-top: 2px;
+    height: 235px;
+}
+
+#stepBox
+{
+    float:left;
+    width:20%;
+    height: 100%;
+}
+
+#formulaBox
+{
+    
+    border-left: 1px solid white;
+    float:right;
+    width:79%;
+    height: 100%;
+}
+
+.outputText
+{
+    margin-left: 5px;
 }
