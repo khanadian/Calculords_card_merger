@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="../static/index.css">
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        <div class = "title">
+            <h1>Calculords Tool</h1>
+        </div>
+        <div id="everything">
+            <div id = "tool"> 
+                <form class="grid" action="/result" method="POST">
+                    <div id = "inputs">
+                        <div id = "playSet" class="setBox">
+                            <h2 class="title">
+                                Play Set
+                            </h2>
+                            <div class="inputRow">
+                                <input id= "play1" name="play1" class= "playInput" maxlength="3">
+                                <input id= "play2" name="play2" class= "playInput" maxlength="3">
+                                <input id= "play3" name="play3" class= "playInput" maxlength="3">
+                            </div>
+                            <div class="inputRow">
+                                <input class= "fakeInput" maxlength="3">
+                            </div>
+                            <div class="inputRow">
+                                <input id= "play4" name="play4" class= "playInput" maxlength="3">
+                                <input id= "play5" name="play5" class= "playInput" maxlength="3">
+                                <input id= "play6" name="play6" class= "playInput" maxlength="3">
+                            </div>
+                        </div>
+                        <div id = "mathSet" class="setBox">
+                            <h2 class="title" id="mathTitle" >
+                                Math Set
+                            </h2>
+                            <div class="inputRow">
+                                <input id= "math1" name="math1" class= "mathInput" maxlength="2">
+                                <input id= "math2" name="math2" class= "mathInput" maxlength="2">
+                                <input id= "math3" name="math3" class= "mathInput" maxlength="2">
+                            </div>
+                            <div class="inputRow">
+                                <input class= "fakeInput" maxlength="3">
+                            </div>
+                            <div class="inputRow"> 
+                                <input id= "math4" name="math4" class= "mathInput" maxlength="2">
+                                <input id= "math5" name="math5" class= "mathInput" maxlength="2">
+                                <input id= "math6" name="math6" class= "mathInput" maxlength="2">
+                            </div>
+                            <div class="inputRow">
+                                <input class= "fakeInput" maxlength="3">
+                            </div>
+                            <div class="inputRow">
+                                <input id= "math7" name="math7" class= "mathInput" maxlength="2">
+                                <input id= "math8" name="math8" class= "mathInput" maxlength="2">
+                                <input id= "math9" name="math9" class= "mathInput" maxlength="2">
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" id="button">submit</button>
+                </form>
+                <div id="output">
+                    <div id="stepBox">
+                        <h2 class="title">
+                            steps
+                        </h2>
+                        <div class="outputText">
+                            
+                            {% for step in steps %}
+                                {{step}} <br>
+                            {% endfor %}
+                            
+                        </div>
+                    </div>
+                    <div id="formulaBox">
+                        <h2 class="title">
+                            formula
+                        </h2>
+                        <div class="outputText">
+                            {% for formu in formula %}
+                                {{formu}}<br>
+                            {% endfor %}
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id = "instructions">
+                <h2 class="title">
+                    Instructions
+                </h2>
+                <div class="outputText">
+                    1. Input the number needed for the playable cards in the "Play Set" text fields<br>
+                    2. Input the numbers you are given that can be operated on in the "Math Set" text fields<br>
+                    3. click submit once all the numbers are put in<br>
+                    4. use the steps generated in the output to play optimally
+                </div>
+            </div>
+        </div>
+        <script src="../static/index.js" async defer></script>
+    </body>
+</html>
